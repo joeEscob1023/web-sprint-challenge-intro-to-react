@@ -18,11 +18,21 @@ const App = () => {
   */
 
   const [characters, setCharacters] = useState([]);
+  const [currentCharIndex, setCurrentCharIndex] = useState("0");
+
+  const openDetails = (idx) => {
+    setCurrentCharIndex(idx);
+  };
+
+  const closeDetails = () => {
+    setCurrentCharIndex(null);
+  };
 
   useEffect(() => {
     axios
       .get(API_KEY)
       .then((res) => {
+        console.log(res.data);
         setCharacters(res.data);
       })
       .catch((err) => console.log(err));
@@ -32,10 +42,19 @@ const App = () => {
     <div className="App">
       <h1 className="Header">Characters</h1>
       {characters.map((char, index) => {
-        //console.log(char, index);
-        <Character key={index} character={char} />;
-        return <Character key={index} character={char} index={index} />;
+        console.log(char);
+        return (
+          <Character
+            key={index}
+            character={char}
+            action={openDetails}
+            idx={index}
+          />
+        );
       })}
+      {currentCharIndex && (
+        <Details charIndex={currentCharIndex} close={closeDetails} />
+      )}
     </div>
   );
 };

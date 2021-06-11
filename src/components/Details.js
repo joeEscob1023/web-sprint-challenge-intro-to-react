@@ -2,35 +2,37 @@ import React, { useState, useEffect } from "react";
 import { API_KEY } from "../Constants/index";
 import axios from "axios";
 
-const Details = ({ currentCharacterIndex, close, index, char }) => {
+const Details = (props) => {
+  const { charIndex, close } = props;
   const [details, setDetails] = useState(null);
   console.log(details);
   useEffect(() => {
     axios
       .get(API_KEY)
       .then((res) => {
+        console.log(res.data);
         setDetails(res.data);
       })
       .catch((err) => console.log(err));
-  }, [index]);
-  console.log(index);
+  }, [charIndex]);
+
   return (
-    <>
-      <h2>Details:</h2>
-      {/*
-          It lets me use this map function for a while and then I change something up, like the css, it reloads and tells me cannot read property of null.
-      */}
-      {/* {details.map((detail) => {
-        return (
-          <div>
-            <p>
-              {detail.name} was in {detail.films}
-            </p>
-          </div>
-        );
-      })} */}
+    <div>
+      <h2>Details</h2>
+      {/* {details && (
+        <>
+          <p>
+            {details.name} is {details.age}
+          </p>
+          <ul>
+            {details.films.map((film, idx) => {
+              return <li kye={idx}>{film}</li>;
+            })}
+          </ul>
+        </>
+      )} */}
       <button onClick={close}>Close</button>
-    </>
+    </div>
   );
 };
 
